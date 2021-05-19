@@ -28,10 +28,11 @@ import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import org.hamcrest.Matchers;
-import org.junit.ClassRule;
-import org.junit.Ignore;
-import org.junit.Test;
-
+import org.junit.jupiter.api.Disabled;
+// import org.junit.ClassRule;
+// import org.junit.Ignore;
+// import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.deployer.KubernetesTestSupport;
@@ -41,6 +42,7 @@ import org.springframework.cloud.deployer.spi.core.AppDeploymentRequest;
 import org.springframework.cloud.deployer.spi.task.LaunchState;
 import org.springframework.cloud.deployer.spi.task.TaskLauncher;
 import org.springframework.cloud.deployer.spi.task.TaskStatus;
+import org.springframework.cloud.deployer.spi.test.AbstractTaskLauncherIntegrationJUnit5Tests;
 import org.springframework.cloud.deployer.spi.test.AbstractTaskLauncherIntegrationTests;
 import org.springframework.cloud.deployer.spi.test.Timeout;
 import org.springframework.core.io.Resource;
@@ -60,10 +62,10 @@ import static org.springframework.cloud.deployer.spi.test.EventuallyMatcher.even
 @SpringBootTest(classes = {KubernetesAutoConfiguration.class}, properties = {
 		"spring.cloud.deployer.kubernetes.namespace=default"
 })
-public class KubernetesTaskLauncherIntegrationTests extends AbstractTaskLauncherIntegrationTests {
+public class KubernetesTaskLauncherIntegrationTests extends AbstractTaskLauncherIntegrationJUnit5Tests {
 
-	@ClassRule
-	public static KubernetesTestSupport kubernetesAvailable = new KubernetesTestSupport();
+	// @ClassRule
+	// public static KubernetesTestSupport kubernetesAvailable = new KubernetesTestSupport();
 
 	@Autowired
 	private TaskLauncher taskLauncher;
@@ -78,7 +80,7 @@ public class KubernetesTaskLauncherIntegrationTests extends AbstractTaskLauncher
 
 	@Test
 	@Override
-	@Ignore("Currently reported as failed instead of cancelled")
+	@Disabled("Currently reported as failed instead of cancelled")
 	public void testSimpleCancel() throws InterruptedException {
 		super.testSimpleCancel();
 	}

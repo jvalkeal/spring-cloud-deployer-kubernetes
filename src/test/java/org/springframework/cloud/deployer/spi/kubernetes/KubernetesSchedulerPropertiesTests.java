@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2020 the original author or authors.
+ * Copyright 2018-2021 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,28 +16,41 @@
 
 package org.springframework.cloud.deployer.spi.kubernetes;
 
-import org.junit.Test;
-import org.junit.experimental.runners.Enclosed;
-import org.junit.runner.RunWith;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.test.context.runner.ApplicationContextRunner;
+import org.springframework.core.env.StandardEnvironment;
+import org.springframework.core.env.SystemEnvironmentPropertySource;
+
+// import org.junit.Test;
+// import org.junit.experimental.runners.Enclosed;
+// import org.junit.runner.RunWith;
+// import org.powermock.api.mockito.PowerMockito;
+// import org.powermock.core.classloader.annotations.PrepareForTest;
+// import org.powermock.modules.junit4.PowerMockRunner;
 
 import org.springframework.util.StringUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests for {@link KubernetesSchedulerProperties}.
  *
  * @author Chris Schaefer
  */
-@RunWith(Enclosed.class)
+// @RunWith(Enclosed.class)
 public class KubernetesSchedulerPropertiesTests {
-	public static class Tests {
+
+	// public static class Tests {
+
 		@Test
 		public void testImagePullPolicyDefault() {
 			KubernetesSchedulerProperties kubernetesSchedulerProperties = new KubernetesSchedulerProperties();
@@ -164,23 +177,48 @@ public class KubernetesSchedulerPropertiesTests {
 			assertEquals("Unexpected task service account name", taskServiceAccountName,
 					kubernetesSchedulerProperties.getTaskServiceAccountName());
 		}
-	}
+	// }
 
-	@RunWith(PowerMockRunner.class)
-	@PrepareForTest({ KubernetesSchedulerProperties.class })
-	public static class EnvTests {
-		@Test
-		public void testNamespaceFromEnvironment() throws Exception {
-			PowerMockito.mockStatic(System.class);
-			PowerMockito.when(System.getenv(KubernetesSchedulerProperties.ENV_KEY_KUBERNETES_NAMESPACE))
-					.thenReturn("nsfromenv");
+	// private final ApplicationContextRunner contextRunner = new ApplicationContextRunner();
 
-			KubernetesSchedulerProperties kubernetesSchedulerProperties = new KubernetesSchedulerProperties();
+	// @Test
+	// public void testNamespaceFromEnvironment() throws Exception {
+	// 	System.getenv().remove("key");
+	// 	this.contextRunner
+	// 			.withInitializer(context -> {
+	// 				Map<String, Object> map = new HashMap<>();
+	// 				map.put(KubernetesSchedulerProperties.ENV_KEY_KUBERNETES_NAMESPACE, "nsfromenv");
 
-			assertTrue("Namespace should not be empty or null",
-					StringUtils.hasText(kubernetesSchedulerProperties.getNamespace()));
-			assertEquals("Unexpected namespace from environment", "nsfromenv",
-					kubernetesSchedulerProperties.getNamespace());
-		}
-	}
+	// 				context.getEnvironment().getPropertySources().addLast(new SystemEnvironmentPropertySource(
+	// 						StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME, map));
+	// 			})
+	// 			.withUserConfiguration(Config1.class)
+	// 			.run((context) -> {
+	// 				KubernetesSchedulerProperties properties = context.getBean(KubernetesSchedulerProperties.class);
+	// 				assertThat(properties.getNamespace()).isEqualTo("nsfromenv");
+	// 			});
+	// }
+
+	// @EnableConfigurationProperties({ KubernetesSchedulerProperties.class })
+	// private static class Config1 {
+	// }
+
+	// @RunWith(PowerMockRunner.class)
+	// @PrepareForTest({ KubernetesSchedulerProperties.class })
+	// public static class EnvTests {
+
+	// 	@Test
+	// 	public void testNamespaceFromEnvironment() throws Exception {
+	// 		PowerMockito.mockStatic(System.class);
+	// 		PowerMockito.when(System.getenv(KubernetesSchedulerProperties.ENV_KEY_KUBERNETES_NAMESPACE))
+	// 				.thenReturn("nsfromenv");
+
+	// 		KubernetesSchedulerProperties kubernetesSchedulerProperties = new KubernetesSchedulerProperties();
+
+	// 		assertTrue("Namespace should not be empty or null",
+	// 				StringUtils.hasText(kubernetesSchedulerProperties.getNamespace()));
+	// 		assertEquals("Unexpected namespace from environment", "nsfromenv",
+	// 				kubernetesSchedulerProperties.getNamespace());
+	// 	}
+	// }
 }
